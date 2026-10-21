@@ -1,1 +1,1 @@
-# scientific_data_visualization_project
+# Scientific Data Visualization Project for UNIMI coursework
