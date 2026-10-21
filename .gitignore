@@ -1,0 +1,32 @@
+# Data is never committed. Acquisition is scripted and checksummed instead;
+# see docs/03-data-sources.md and data/MANIFEST.tsv.
+data/
+!data/MANIFEST.tsv
+!data/.gitkeep
+
+# Generated figures are reproducible from code and config.
+figures/
+!figures/.gitkeep
+
+# Environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Large intermediates that occasionally escape data/
+*.h5ad
+*.bed
+*.bim
+*.fam
+*.vcf
+*.vcf.gz
+
+# Editor and OS
+.DS_Store
+.vscode/
+.idea/
