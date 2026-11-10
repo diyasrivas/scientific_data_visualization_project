@@ -30,3 +30,7 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+
+# Local-only working material
+docs/
+presentation/
