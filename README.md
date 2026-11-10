@@ -1,6 +1,6 @@
 # Scientific Data Visualization Project
 
-Course project for **Scientific Visualization** (6 ECTS, INFO-01/A), MSc Computer Science
+Course project for **Scientific Visualization**, for MSc Computer Science
 (LM-18), Università degli Studi di Milano.
 
 ## What this repository contains
