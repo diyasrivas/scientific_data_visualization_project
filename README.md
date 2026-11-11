@@ -7,11 +7,12 @@ Course project for **Scientific Visualization**, for MSc Computer Science
 
 Python scripts that pull open data (gnomAD v4 allele counts and CPIC pharmacogene
 annotation), analyse East Asian versus South Asian allele-frequency differences in
-pharmacogenes, and produce the project's figures.
+pharmacogenes, and run analyses for the analysis in this project.
 
 The genetic data are gnomAD reference groups, selected to reflect different ethnic
 groups present in Singapore.
 
+## Dataset
 
 | Source | Endpoint | Used for |
 | --- | --- | --- |
@@ -66,20 +67,11 @@ Start with `notebooks/analysis_walkthrough.ipynb` for the analysis, or
     python3 scripts/07_population_pca.py            # population PCA and control, F6
     python3 scripts/08_variant_tests.py             # per-variant test, BH correction, F7
 
-Steps 1 and 2 need network access and take about an hour. Everything after that runs
-offline from the cached pulls in under a minute. All seeds are fixed at 0.
-
-Set `SDV_DECK=1` on the figure scripts to write slide-sized 300 dpi versions into
-`presentation/assets/figures/`, then build the deck with
-`python3 presentation/build_deck.py`.
 
 ## Tools used
 
 Python 3.9 or later, with pandas, numpy, scipy, matplotlib and requests. Developed against
 Python 3.9.7, pandas 1.3.4, numpy 1.26.4, scipy 1.13.1 and matplotlib 3.4.3.
-
-`python-pptx` builds the slide deck. Jupyter is needed only to open the walkthrough
-notebook, which is saved with its outputs and so can be read without running it.
 
 ## Summary of results and limitations
 
@@ -132,32 +124,37 @@ documents the pipeline stage by stage, including the limitations of the FST impl
 
 ## References
 
-The same list appears on the references slide of the deck.
-
-Bhatia G, Patterson N, Sankararaman S, Price AL (2013). Estimating and interpreting FST: the
-impact of rare variants. *Genome Research* 23, 1514-1521.
-
-Chen S, et al. (2024). A genomic mutational constraint map using variation in 76,156 human
-genomes. *Nature* 625, 92-100. (gnomAD v4)
-
-Hudson RR, Slatkin M, Maddison WP (1992). Estimation of levels of gene flow from DNA sequence
-data. *Genetics* 132, 583-589.
-
-International Warfarin Pharmacogenetics Consortium, Klein TE, et al. (2009). Estimation of the
-warfarin dose with clinical and pharmacogenetic data. *New England Journal of Medicine* 360,
-753-764.
-
-Li J, et al. (2011). Global patterns of genetic diversity and signals of natural selection for
-human ADME genes. *Human Molecular Genetics* 20, 528-540.
-
-Moriyama T, et al. (2016). NUDT15 polymorphisms alter thiopurine metabolism and hematopoietic
-toxicity. *Nature Genetics* 48, 367-373.
-
-Relling MV, Klein TE (2011). CPIC: Clinical Pharmacogenetics Implementation Consortium of the
-Pharmacogenomics Research Network. *Clinical Pharmacology and Therapeutics* 89, 464-467.
+Verified against PubMed and publisher records on 2026-11-11. The same list appears on the
+references slide of the deck.
 
 Benjamini Y, Hochberg Y (1995). Controlling the false discovery rate: a practical and powerful
-approach to multiple testing. *Journal of the Royal Statistical Society B* 57, 289-300.
+approach to multiple testing. *Journal of the Royal Statistical Society, Series B* 57(1), 289-300.
+doi:10.1111/j.2517-6161.1995.tb02031.x
+
+Bhatia G, Patterson N, Sankararaman S, Price AL (2013). Estimating and interpreting FST: the
+impact of rare variants. *Genome Research* 23(9), 1514-1521. doi:10.1101/gr.154831.113
+
+Chen S, Francioli LC, Goodrich JK, et al. (2024). A genomic mutational constraint map using
+variation in 76,156 human genomes. *Nature* 625(7993), 92-100. doi:10.1038/s41586-023-06045-0
+(gnomAD v4)
+
+Hudson RR, Slatkin M, Maddison WP (1992). Estimation of levels of gene flow from DNA sequence
+data. *Genetics* 132(2), 583-589. doi:10.1093/genetics/132.2.583
+
+International Warfarin Pharmacogenetics Consortium, Klein TE, Altman RB, et al. (2009). Estimation
+of the warfarin dose with clinical and pharmacogenetic data. *New England Journal of Medicine*
+360(8), 753-764. doi:10.1056/NEJMoa0809329
+
+Li J, Zhang L, Zhou H, Stoneking M, Tang K (2011). Global patterns of genetic diversity and
+signals of natural selection for human ADME genes. *Human Molecular Genetics* 20(3), 528-540.
+doi:10.1093/hmg/ddq498
+
+Moriyama T, Nishii R, Perez-Andreu V, et al. (2016). NUDT15 polymorphisms alter thiopurine
+metabolism and hematopoietic toxicity. *Nature Genetics* 48(4), 367-373. doi:10.1038/ng.3508
+
+Relling MV, Klein TE (2011). CPIC: Clinical Pharmacogenetics Implementation Consortium of the
+Pharmacogenomics Research Network. *Clinical Pharmacology and Therapeutics* 89(3), 464-467.
+doi:10.1038/clpt.2010.279
 
 ### Data resources
 
