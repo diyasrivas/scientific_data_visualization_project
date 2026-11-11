@@ -118,14 +118,19 @@ if DECK:  # slide-sized variant: no embedded title or footnote, larger text; wri
             else:
                 ax.scatter(*c[i], s=80, color=POP_OTHER, edgecolor="white", zorder=2)
     fig.subplots_adjust(left=0.085, right=0.985, top=0.83, bottom=0.17)
-    # direct labels for the four key groups only, at fixed offsets (no leader lines); other groups stay grey dots
-    KEY = {"afr": (-2, 14, "left"), "eas": (0, 16, "center"), "sas": (0, -22, "center"), "nfe": (0, 16, "center")}
-    for ax, c, _ in panels:
+    # every group is labelled directly: the four of interest beside their dot, the rest on a short leader
+    # Four groups sit inside one tight cluster here; naming each of them at this panel size produces
+    # overlapping text, so they are named collectively in the panel and individually in the caption.
+    KEY = {"afr": (0, -16, "center"), "eas": (0, 16, "center"), "sas": (0, -22, "center"), "nfe": (0, 16, "center")}
+    for j, (ax, c, _) in enumerate(panels):
         for i, p in enumerate(POPS):
             if p in KEY:
                 dx, dy, ha = KEY[p]
                 ax.annotate(POP_LABEL[p], c[i], xytext=(dx, dy), textcoords="offset points", ha=ha, va="center",
                             fontsize=13, color=POP.get(p, SUBTLE), fontweight="bold" if p in POP else "normal")
+        if j == 0:
+            ax.text(.03, .06, "grey: four other\ngnomAD groups", transform=ax.transAxes, ha="left", va="bottom",
+                    fontsize=11, color=SUBTLE, linespacing=1.2)
     axes[0].set_ylabel(f"PC2 ({vp[1] * 100:.0f}% of variance)")
     axes[0].set_xlabel(f"PC1 ({vp[0] * 100:.0f}% of variance)")
     axes[1].set_ylabel(f"Axis 2 (own PC2: {vb[1] * 100:.0f}%)")

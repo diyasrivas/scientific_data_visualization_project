@@ -50,7 +50,23 @@ def gene_fst(d):
                                     n_var=("num", "size"), level_A=("level_A", "max"),
                                     mean_delta=("delta", "mean"))
     g["fst"] = g.num / g.den
-    return g[g.n_var >= MIN_VAR].sort_values("fst", ascending=False)
+    g = g[g.n_var >= MIN_VAR]
+    g = g.join(drop_one_min(d))
+    return g.sort_values("fst", ascending=False)
+
+
+def drop_one_min(d):
+    """Lowest gene FST obtainable by removing one variant: how much of a gene's value is one variant.
+
+    A delete-one jackknife asked the other way round. A gene whose FST survives this is divergent
+    across its variants; a gene whose FST collapses owes its rank to a single site.
+    """
+    out = {}
+    for gene, s in d.groupby("genesymbol"):
+        num, den = s.num.to_numpy(), s.den.to_numpy()
+        tot_n, tot_d = num.sum(), den.sum()
+        out[gene] = np.min((tot_n - num) / (tot_d - den))
+    return pd.Series(out, name="fst_drop1").rename_axis("genesymbol")
 
 
 def perm_test(g, n=10000):
@@ -107,6 +123,8 @@ def fig_ranking(g, bg):
     ax.text(lo, 1.015, band, transform=ax.get_xaxis_transform(), ha="left", va="bottom",
             fontsize=style.KEY_FONT, color=style.SUBTLE)  # label sits on the band, above its top edge
     ax.hlines(range(len(top)), 0, top.fst, color=col, lw=3)
+    # hollow marker: the same gene with its single most divergent variant removed
+    ax.scatter(top.fst_drop1, range(len(top)), facecolor="white", edgecolor=col, linewidth=1.8, s=55, zorder=4)
     ax.scatter(top.fst, range(len(top)), c=col, s=80, zorder=3)
     rug_y = -1.6  # context: where all genes sit, on the same x scale
     ax.vlines(g.fst, rug_y - .35, rug_y + .35, color=style.BACKGROUND, lw=1.2)
@@ -121,6 +139,8 @@ def fig_ranking(g, bg):
     ax.set_ylabel(f"Gene (top {N_TOP} of {len(g)} by FST)")
     title_block(fig, "Gene-level East vs South Asian FST, top pharmacogenes")
     margin_key(fig, 0.78, 0.86, [("CPIC level A", style.LEVEL_A), ("other CPIC genes", style.OTHER_CPIC)])
+    fig.text(0.78, 0.68, "\u25cb  without the gene's\n     single most\n     divergent variant", color=style.TEXT,
+             fontsize=style.KEY_FONT, va="top", linespacing=1.25)
     save(fig, "f1_gene_ranking")
 
 
@@ -198,6 +218,7 @@ def fig_ranking_deck(g, bg):
     ax.text(q1, 1.015, f"Random non-pharmacogenes (n={len(bg)}): median and IQR", transform=ax.get_xaxis_transform(),
             ha="left", va="bottom", fontsize=13, color=style.SUBTLE)
     ax.hlines(range(len(top)), 0, top.fst, color=col, lw=3.5)
+    ax.scatter(top.fst_drop1, range(len(top)), facecolor="white", edgecolor=col, linewidth=2, s=70, zorder=4)
     ax.scatter(top.fst, range(len(top)), c=col, s=95, zorder=3)
     rug_y = -1.6
     ax.vlines(g.fst, rug_y - .35, rug_y + .35, color=style.BACKGROUND, lw=1.5)
@@ -210,7 +231,9 @@ def fig_ranking_deck(g, bg):
     ax.spines["left"].set_visible(False); ax.tick_params(axis="y", length=0)
     ax.set_xlabel("Hudson FST, East Asian vs South Asian (dimensionless)")
     ax.set_ylabel(f"Gene (top {n} of {len(g)} by FST)")
-    margin_key(fig, 0.62, 0.50, [("CPIC level A", style.LEVEL_A), ("other CPIC genes", style.OTHER_CPIC)], dy=0.075)
+    margin_key(fig, 0.62, 0.62, [("CPIC level A", style.LEVEL_A), ("other CPIC genes", style.OTHER_CPIC)], dy=0.085)
+    fig.text(0.62, 0.42, "\u25cb  without the gene's single\n     most divergent variant", color=style.TEXT,
+             fontsize=13, va="top", linespacing=1.25)
     style.deck_save(fig, "f1_gene_ranking")
 
 
@@ -293,7 +316,7 @@ def main():
     print(f"genes kept (>= {MIN_VAR} common variants): level A {g.level_A.sum()}, other {(~g.level_A).sum()}")
     print(f"median gene FST: level A {g[g.level_A].fst.median():.4f}, other {g[~g.level_A].fst.median():.4f}")
     print(f"mean diff {obs:.4f}, permutation p={p:.4f}")
-    print(g.head(10)[["fst", "n_var", "level_A"]])
+    print(g.head(10)[["fst", "fst_drop1", "n_var", "level_A"]])
     figures(d, g, p)
 
 

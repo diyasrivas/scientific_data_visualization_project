@@ -4,9 +4,13 @@ data/
 !data/MANIFEST.tsv
 !data/.gitkeep
 
-# Generated figures are reproducible from code and config.
-figures/
+# Generated figures. The PNGs are the project's deliverables and are committed;
+# the SVG sources are not. Written as figures/* rather than figures/, because
+# git does not descend into an excluded directory and the negations below would
+# never be read.
+figures/*
 !figures/.gitkeep
+!figures/*.png
 
 # Environments and caches
 .venv/
@@ -30,6 +34,7 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+.review_tmp/
 
 # Local-only working material
 docs/
