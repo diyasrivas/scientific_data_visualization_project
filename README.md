@@ -7,12 +7,17 @@ Course project for **Scientific Visualization**, for MSc Computer Science
 
 Python scripts that pull open data (gnomAD v4 allele counts and CPIC pharmacogene
 annotation), analyse East Asian versus South Asian allele-frequency differences in
-pharmacogenes, and run analyses for the analysis in this project.
+pharmacogenes, and produce the project's figures.
 
 The genetic data are gnomAD reference groups, selected to reflect different ethnic
 groups present in Singapore.
 
 ## Dataset
+
+No dataset is redistributed here. Everything is fetched by script from three open sources,
+none of which needs a login or an access committee. A clean checkout can regenerate the
+whole dataset by running the pipeline below. Access date for every number quoted in this
+repository: **2026-11-10**.
 
 | Source | Endpoint | Used for |
 | --- | --- | --- |
@@ -67,15 +72,24 @@ Start with `notebooks/analysis_walkthrough.ipynb` for the analysis, or
     python3 scripts/07_population_pca.py            # population PCA and control, F6
     python3 scripts/08_variant_tests.py             # per-variant test, BH correction, F7
 
+Steps 1 and 2 need network access and take about an hour. Everything after that runs
+offline from the cached pulls in under a minute. All seeds are fixed at 0.
+
+Set `SDV_DECK=1` on the figure scripts to write slide-sized 300 dpi versions into
+`presentation/assets/figures/`, then build the deck with
+`python3 presentation/build_deck.py`.
 
 ## Tools used
 
 Python 3.9 or later, with pandas, numpy, scipy, matplotlib and requests. Developed against
 Python 3.9.7, pandas 1.3.4, numpy 1.26.4, scipy 1.13.1 and matplotlib 3.4.3.
 
+`python-pptx` builds the slide deck. Jupyter is needed only to open the walkthrough
+notebook, which is saved with its outputs and so can be read without running it.
+
 ## Summary of results and limitations
 
-Four questions, two of which were framed so that a null answer is informative.
+Five questions, three of which were framed so that a null answer is informative.
 
 **Q1. Which pharmacogenes differ most between East and South Asian reference groups?**
 VKORC1, at a pooled Hudson FST of 0.40 against a pharmacogene median of 0.047. The second
@@ -96,9 +110,12 @@ points. CYP2C9 and UGT1A1 run the other way, 23 and 18 points higher in South As
 Figure F4.
 
 **Q4. Do pharmacogenes as a class diverge more than ordinary genes?** No evidence of a
-difference. Median FST 0.047 against 0.050 for 81 random genes, one-sided permutation
-p = 0.53. A PCA of the eight gnomAD groups built from pharmacogenes alone reproduces the
-layout built from random genes with a distance correlation of 0.99. Figure F6.
+difference. Median FST 0.047 against 0.050 for 81 random genes, one-sided permutation p = 0.53.
+
+**Q5. Does the population structure seen through pharmacogenes differ from the one seen through
+random genes?** No. A PCA of the eight gnomAD groups built from pharmacogenes alone reproduces the
+layout built from random genes, with a Procrustes disparity of 0.01 and a distance correlation of
+0.99. Figure F6.
 
 A methodological result worth stating separately: 3,203 of the 3,313 common variants tested
 (97%) have a Benjamini-Hochberg adjusted p-value below 0.05, and every variant differing by
