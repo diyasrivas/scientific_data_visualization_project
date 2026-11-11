@@ -12,12 +12,6 @@ pharmacogenes, and produce the project's figures.
 The genetic data are gnomAD reference groups, selected to reflect different ethnic
 groups present in Singapore.
 
-## Dataset
-
-No dataset is redistributed here. Everything is fetched by script from three open sources,
-none of which needs a login or an access committee. A clean checkout can regenerate the
-whole dataset by running the pipeline below. Access date for every number quoted in this
-repository: **2026-11-10**.
 
 | Source | Endpoint | Used for |
 | --- | --- | --- |
